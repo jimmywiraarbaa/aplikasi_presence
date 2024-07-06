@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   location: ^6.0.2
   syncfusion_flutter_maps: ^26.1.40
+  http: ^1.2.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
