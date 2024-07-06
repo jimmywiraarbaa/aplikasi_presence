@@ -1,5 +1,6 @@
 import 'package:aplikasi_presence/HomePage.dart';
 import 'package:aplikasi_presence/LoginPage.dart';
+import 'package:aplikasi_presence/SimpanPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }

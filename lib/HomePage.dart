@@ -1,3 +1,4 @@
+import 'package:aplikasi_presence/SimpanPage.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -226,7 +227,11 @@ class _HomePageState extends State<HomePage> {
         ),
       )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => SimpanPage()))
+              .then((value) => (value));
+        },
         child: Icon(Icons.add),
       ),
     );

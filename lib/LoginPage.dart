@@ -1,3 +1,4 @@
+import 'package:aplikasi_presence/HomePage.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,7 +11,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.all(8.0),
@@ -26,8 +27,15 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               Text("Kata Sandi"),
               TextField(),
-              SizedBox(height: 20)
-              // ElevatedButton(onPressed: () {}, child: Text("Masuk"))
+              SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(
+                            MaterialPageRoute(builder: (context) => HomePage()))
+                        .then((value) => (value));
+                  },
+                  child: Text("Masuk"))
             ],
           ),
         ),
