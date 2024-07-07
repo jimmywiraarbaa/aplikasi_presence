@@ -90,16 +90,19 @@ class _HomePageState extends State<HomePage> {
                                 if (snapshot.hasData) {
                                   return Text(
                                     snapshot.data!,
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 20),
                                   );
                                 } else {
                                   return Text("-Unknown-",
-                                      style: TextStyle(fontSize: 16));
+                                      style: TextStyle(fontSize: 20));
                                 }
                               }
                             }),
                         IconButton(
-                          icon: Icon(Icons.logout),
+                          icon: Icon(
+                            Icons.logout,
+                            color: Colors.red,
+                          ),
                           onPressed: logout,
                         ),
                       ],
@@ -175,15 +178,25 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Riwayat Absen"),
+                    Text(
+                      "Riwayat Absen",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: riwayat.length,
                         itemBuilder: (context, index) => Card(
                           child: ListTile(
-                            leading: Text(riwayat[index].tanggal),
+                            leading: Text(
+                              riwayat[index].tanggal,
+                              style: TextStyle(fontSize: 14),
+                            ),
                             title: Row(
                               children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
                                 Column(
                                   children: [
                                     Text(
@@ -201,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                                 SizedBox(
-                                  width: 20,
+                                  width: 50,
                                 ),
                                 Column(
                                   children: [
@@ -238,7 +251,13 @@ class _HomePageState extends State<HomePage> {
             setState(() {});
           });
         },
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.blue,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       ),
     );
   }
