@@ -215,7 +215,9 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => SimpanPage()))
-              .then((value) => (value));
+              .then((value) {
+            setState(() {});
+          });
         },
         child: Icon(Icons.add),
       ),

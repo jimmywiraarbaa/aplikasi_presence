@@ -1,7 +1,12 @@
+import 'dart:convert';
+
+import 'package:aplikasi_presence/models/SavePrecenceResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
+import 'package:http/http.dart' as myHttp;
 
 class SimpanPage extends StatefulWidget {
   const SimpanPage({super.key});
@@ -11,6 +16,18 @@ class SimpanPage extends StatefulWidget {
 }
 
 class _SimpanPageState extends State<SimpanPage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<String> _token;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _token = _prefs.then((SharedPreferences prefs) {
+      return prefs.getString("token") ?? "";
+    });
+  }
+
   Future<LocationData?> _currenctLocation() async {
     bool serviceEnable;
     PermissionStatus permissionGranted;
@@ -36,13 +53,43 @@ class _SimpanPageState extends State<SimpanPage> {
     return await location.getLocation();
   }
 
+  Future savePrecence(latitude, longitude) async {
+    SavePresenceResponModel savePresenceResponModel;
+    Map<String, String> body = {
+      "latitude": latitude.toString(),
+      "longitude": longitude.toString()
+    };
+
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ' + await _token
+    };
+
+    var response = await myHttp.post(
+        Uri.parse('http://127.0.0.1:8000/api/save-presensi'),
+        body: body,
+        headers: headers);
+
+    savePresenceResponModel =
+        SavePresenceResponModel.fromJson(json.decode(response.body));
+
+    if (savePresenceResponModel.success) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Sukses simpan kehadiran")));
+
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Gagal simpan kehadiran")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
         iconTheme: IconThemeData(
-          color: Colors.black,
+          color: Colors.white,
         ),
         title: Text(
           "Kehadiran",
@@ -87,7 +134,10 @@ class _SimpanPageState extends State<SimpanPage> {
                     height: 30,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      savePrecence(
+                          currentLocation.latitude, currentLocation.longitude);
+                    },
                     child: Text(
                       "Simpan Kehadiran",
                       style: TextStyle(color: Colors.white),
