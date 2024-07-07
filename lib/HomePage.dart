@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:aplikasi_presence/SimpanPage.dart';
 import 'package:aplikasi_presence/models/HomeResponse.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _token = _prefs.then((SharedPreferences prefs) {
@@ -31,6 +29,15 @@ class _HomePageState extends State<HomePage> {
 
     _name = _prefs.then((SharedPreferences prefs) {
       return prefs.getString("name") ?? "";
+    });
+  }
+
+  Future<void> logout() async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.remove("token");
+    setState(() {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
     });
   }
 
@@ -69,31 +76,43 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder(
-                        future: _name,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          } else {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data!,
-                                style: TextStyle(fontSize: 16),
-                              );
-                            } else {
-                              return Text("-Unknown-",
-                                  style: TextStyle(fontSize: 16));
-                            }
-                          }
-                        }),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FutureBuilder(
+                            future: _name,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<String> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data!,
+                                    style: TextStyle(fontSize: 16),
+                                  );
+                                } else {
+                                  return Text("-Unknown-",
+                                      style: TextStyle(fontSize: 16));
+                                }
+                              }
+                            }),
+                        IconButton(
+                          icon: Icon(Icons.logout),
+                          onPressed: logout,
+                        ),
+                      ],
+                    ),
                     SizedBox(
                       height: 20,
                     ),
                     Container(
                       width: 400,
-                      decoration: BoxDecoration(color: Colors.blue[800]),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[800],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
